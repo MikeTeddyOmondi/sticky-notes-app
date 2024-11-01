@@ -1,7 +1,7 @@
 import React from "react";
 import { useContext } from "react";
 import { NotesContext } from "../context/NotesContext";
-import { db } from "../appwrite/databases";
+import { db } from "../localbase/config";
 
 const Color = ({ color }) => {
   const { selectedNote, notes, setNotes } = useContext(NotesContext);
@@ -11,7 +11,7 @@ const Color = ({ color }) => {
 
     try {
       const currentNoteIndex = notes.findIndex(
-        (note) => note.$id === selectedNote.$id
+        (note) => note.id === selectedNote.id
       );
 
       const updatedNote = {
@@ -23,7 +23,7 @@ const Color = ({ color }) => {
       newNotes[currentNoteIndex] = updatedNote;
       setNotes(newNotes);
 
-      db.notes.update(selectedNote.$id, {
+      db.notes.update(selectedNote.id, {
         colors: JSON.stringify(color),
       });
     } catch (error) {

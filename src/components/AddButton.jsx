@@ -2,7 +2,7 @@ import React from "react";
 import Plus from "../icons/Plus";
 import colors from "../assets/colors.json";
 import { useRef } from "react";
-import { db } from "../appwrite/databases";
+import { db } from "../localbase/config";
 import { useContext } from "react";
 import { NotesContext } from "../context/NotesContext";
 
@@ -21,12 +21,14 @@ const AddButton = () => {
 
     startingPos.current += 10;
 
-    const response = await db.notes.create(payload);
-    setNotes((prevState) => [response, ...prevState]);
+    const {
+      data: { data },
+    } = await db.notes?.create(payload);
+    setNotes((prevState) => [data, ...prevState]);
   };
 
   return (
-    <div id="add-btn" onClick={addNote}>
+    <div id='add-btn' onClick={addNote}>
       <Plus />
     </div>
   );

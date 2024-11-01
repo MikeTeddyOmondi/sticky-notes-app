@@ -1,14 +1,13 @@
-import { createContext } from "react";
-import { useState, useEffect } from "react";
+import { createContext, useState, useEffect } from "react";
 import Spinner from "../icons/Spinner";
-import { db } from "../appwrite/databases";
+import { db } from "../localbase/config";
 
 export const NotesContext = createContext();
 
 const NotesProvider = ({ children }) => {
   const [selectedNote, setSelectedNote] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [notes, setNotes] = useState();
+  const [notes, setNotes] = useState([]);
 
   useEffect(() => {
     init();
@@ -16,7 +15,7 @@ const NotesProvider = ({ children }) => {
 
   const init = async () => {
     const response = await db.notes.list();
-    setNotes(response.documents);
+    setNotes(response);
     setLoading(false);
   };
 
@@ -33,7 +32,7 @@ const NotesProvider = ({ children }) => {
             height: "100vh",
           }}
         >
-          <Spinner size="100" />
+          <Spinner size='100' />
         </div>
       ) : (
         children

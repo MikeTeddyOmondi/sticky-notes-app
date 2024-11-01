@@ -4,5 +4,5 @@ COPY . .
 RUN npm i --silent
 RUN npm run build
 
-FROM lipanski/docker-static-website:2.3.0 as release
+FROM lipanski/docker-static-website:2.4.0 as release
 COPY --from=build /app/dist .

@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react";
-import Trash from "../icons/Trash";
 import { setNewOffset, autoGrow, setZIndex, bodyParser } from "../utils";
-import { db } from "../appwrite/databases";
+import { db } from "../localbase/config";
 import Spinner from "../icons/Spinner";
 import DeleteButton from "../components/DeleteButton";
 import { useContext } from "react";
@@ -65,7 +64,7 @@ const NoteCard = ({ note }) => {
     const payload = { [key]: JSON.stringify(value) };
     console.log("Save data called:", payload);
     try {
-      await db.notes.update(note.$id, payload);
+      await db.notes.update(note.id, payload);
     } catch (error) {
       console.error(error);
     }
@@ -87,33 +86,30 @@ const NoteCard = ({ note }) => {
   return (
     <div
       ref={cardRef}
-      className="card"
+      className='card'
       style={{
         left: `${position.x}px`,
         top: `${position.y}px`,
         backgroundColor: colors.colorBody,
-
       }}
     >
       <div
         onMouseDown={mouseDown}
-        className="card-header"
+        className='card-header'
         style={{
           backgroundColor: colors.colorHeader,
         }}
       >
-        <DeleteButton noteId={note.$id} />
+        <DeleteButton noteId={note.id} />
 
         {saving && (
-          <div className="card-saving">
+          <div className='card-saving'>
             <Spinner color={colors.colorText} />
-            <span style={{ color: colors.colorText }}>
-              Saving...
-            </span>
+            <span style={{ color: colors.colorText }}>Saving...</span>
           </div>
         )}
       </div>
-      <div className="card-body">
+      <div className='card-body'>
         <textarea
           onKeyUp={handleKeyUp}
           onFocus={() => {
